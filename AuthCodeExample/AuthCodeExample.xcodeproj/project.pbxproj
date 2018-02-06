@@ -12,6 +12,7 @@
 		6BFC30F6204BC2BE004A5FA7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6BFC30F4204BC2BE004A5FA7 /* Main.storyboard */; };
 		6BFC30F8204BC2BE004A5FA7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6BFC30F7204BC2BE004A5FA7 /* Assets.xcassets */; };
 		6BFC30FB204BC2BE004A5FA7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6BFC30F9204BC2BE004A5FA7 /* LaunchScreen.storyboard */; };
+		6BFC3106204BC607004A5FA7 /* AuthCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFC3105204BC607004A5FA7 /* AuthCodeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		6BFC30F7204BC2BE004A5FA7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6BFC30FA204BC2BE004A5FA7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6BFC30FC204BC2BE004A5FA7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6BFC3105204BC607004A5FA7 /* AuthCodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthCodeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 		6BFC30EF204BC2BE004A5FA7 /* AuthCodeExample */ = {
 			isa = PBXGroup;
 			children = (
+				6BFC3104204BC607004A5FA7 /* AuthCode */,
 				6BFC30F0204BC2BE004A5FA7 /* AppDelegate.swift */,
 				6BFC30F2204BC2BE004A5FA7 /* ViewController.swift */,
 				6BFC30F4204BC2BE004A5FA7 /* Main.storyboard */,
@@ -62,6 +65,15 @@
 				6BFC30FC204BC2BE004A5FA7 /* Info.plist */,
 			);
 			path = AuthCodeExample;
+			sourceTree = "<group>";
+		};
+		6BFC3104204BC607004A5FA7 /* AuthCode */ = {
+			isa = PBXGroup;
+			children = (
+				6BFC3105204BC607004A5FA7 /* AuthCodeView.swift */,
+			);
+			name = AuthCode;
+			path = ../../AuthCode;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,6 +150,7 @@
 			files = (
 				6BFC30F3204BC2BE004A5FA7 /* ViewController.swift in Sources */,
 				6BFC30F1204BC2BE004A5FA7 /* AppDelegate.swift in Sources */,
+				6BFC3106204BC607004A5FA7 /* AuthCodeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

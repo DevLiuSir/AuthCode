@@ -12,14 +12,12 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        /**** AuthCodeView ****/
+        let viewFrame = CGRect(x: 30, y: 100, width: 300, height: 100)
+        let authCode = AuthCodeView(frame: viewFrame, with: IdentifyingCodeType.defaultType)
+        authCode.isRotation = false
+        view.addSubview(authCode)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-
 }
 
