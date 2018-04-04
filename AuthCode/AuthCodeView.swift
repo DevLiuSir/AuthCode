@@ -9,23 +9,27 @@
 import UIKit
 
 
+/// 根据字体文字大小和字体计算label宽度
+///
+/// - Parameters:
+///   - text: 文字
+///   - font: 字体
+///   - maxSize: 最大值
+/// - Returns: 大小
+func calculatorSize(withText text: String, font: UIFont, maxSize: CGSize) -> CGSize {
+    let attrs = [NSAttributedStringKey.font: font]
+    return text.boundingRect(with: maxSize, options: .usesLineFragmentOrigin, attributes: attrs, context: nil).size
+}
 
-/// 线的个数
-let kLineCount = 9
-
-/// 线的宽度
-let kLineWidth: CGFloat = 1.0
-
-/// 字符个数
-let kCharCount = 4
-
-/// 字体大小
-let kFontSize = UIFont.systemFont(ofSize: CGFloat(arc4random() % 8 + 20))
-
-/// 随机色
-let kRandomColor = UIColor(red: CGFloat(arc4random() % 256) / 255, green: CGFloat(arc4random() % 256) / 255, blue: CGFloat(arc4random() % 256) / 255, alpha: 1)
-
-
+/// 从一个范围中返回一个随机数
+///
+/// - Parameter range: 范围
+/// - Returns: 随机数
+func randomNumber(from range: CountableClosedRange<Int>) -> Int {
+    let distance = range.upperBound - range.lowerBound
+    let rnd = arc4random_uniform(UInt32(distance))
+    return range.lowerBound + Int(rnd)
+}
 
 /// 获取随机色
 ///
@@ -37,7 +41,6 @@ func getRandomColor(withAlpha alpha: CGFloat) -> UIColor {
     let b = CGFloat(arc4random() % UInt32(100))
     let color = UIColor(red: r / 100.0, green: g / 100.0, blue: b / 100.0, alpha: alpha)
     return color
-    
 }
 
 
@@ -70,7 +73,21 @@ class AuthCodeView: UIView {
     
     /// 是否旋转
     var isRotation: Bool = false
+    
+    /// 线的个数
+    var kLineCount = 9
+    
+    /// 线的宽度
+    var kLineWidth: CGFloat = 1.0
+    
+    /// 字符个数
+    var kCharCount = 4
+    
+    /// 字体大小
+    var kFontSize = UIFont.systemFont(ofSize: CGFloat(arc4random() % 8 + 30))
 
+    
+    
     // MARK: - Method
     
     /// 初始化方法
@@ -82,8 +99,7 @@ class AuthCodeView: UIView {
         super.init(frame: frame)
         self.layer.cornerRadius = 5.0
         self.layer.masksToBounds = true
-        self.backgroundColor = kRandomColor
-        
+        self.backgroundColor = getRandomColor(withAlpha: 1.0)
         switch type {
         case .defaultType:
             configDefaultAuth()
@@ -100,7 +116,7 @@ class AuthCodeView: UIView {
 
     /// 配置默认验证码
     private func configDefaultAuth() {
-    
+
     /*
          从字符数组中随机抽取相应数量的字符，组成验证码字符串.
          数组中存放的是可选的字符，可以是字母，也可以是中文
@@ -133,8 +149,15 @@ class AuthCodeView: UIView {
         mathString = "\(i + j)"
         print("\(defaultString)")
     }
+    
+    /// 移除所有子视图: 这里指label
+    private func removeAllSubviews() {
+        for v in subviews {
+            v.removeFromSuperview()
+        }
+    }
  
-    /// 点击屏幕调用
+    /// 点击当前视图调用
     ///
     /// - Parameters:
     ///   - touches: 点击
@@ -144,6 +167,7 @@ class AuthCodeView: UIView {
         switch codeType {
         case .defaultType:
             configDefaultAuth()
+            removeAllSubviews()
         case .mathType:
             configMathAuth()
         }
@@ -170,7 +194,7 @@ class AuthCodeView: UIView {
         /* 绘制界面的相关属性 */
         let width = rect.size.width / CGFloat(codeStr.length) - textSize.width
         let height = Int(rect.size.height - textSize.height)
-        var po = CGPoint.zero
+//        var po = CGPoint.zero
         /// 字符的长度
         let textLenth = codeStr.length
         
@@ -180,13 +204,42 @@ class AuthCodeView: UIView {
         for i in 0 ..< textLenth {
             let pX = CGFloat(arc4random() % UInt32(width)) + CGFloat(i) * rect.size.width / CGFloat(textLenth)
             let pY = CGFloat(arc4random() % UInt32(height))
-            po = CGPoint(x: pX, y: pY)
+//            po = CGPoint(x: pX, y: pY)
 
-            // 4.获取一个字符
-            let code = String.init(format: "%C", codeStr.character(at: i))
-            let textCharacter = code as NSString
-            // 5.以某个点绘制界面
-            textCharacter.draw(at: po, withAttributes: [NSAttributedStringKey.font: kFontSize])
+            /// 获取当前下标的字符
+            let currentCharacter = String.init(format: "%C", codeStr.character(at: i))
+            
+            /*
+             CGFloat.greatestFiniteMagnitude: 是Swift 3.0语法, 相当于2.3中的CGFloat.max, 即是CGFloat的最大值
+             */
+            
+            /// 获取字体的Size
+            let si = calculatorSize(withText: currentCharacter, font: kFontSize, maxSize: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude))
+            
+            /// 4.标签
+            let label = UILabel(frame: CGRect(x: pX, y: pY, width: si.width, height: si.height))
+            label.text = currentCharacter
+            label.font = kFontSize
+            
+            if isRotation { // 验证码字符是否需要斜着
+                /// 旋转角度: 随机-1到1
+                var r = Double(randomNumber(from: -1...1))
+                
+                if r > 0.3 {
+                    r = 0.3
+                } else if r < -0.3 {
+                    r = -0.3
+                }
+                label.transform = CGAffineTransform(rotationAngle: CGFloat(r))
+            }
+            addSubview(label)
+            
+            
+//             4.获取一个字符
+//            let code = String.init(format: "%C", codeStr.character(at: i))
+//            let textCharacter = code as NSString
+//            // 5.以某个点绘制界面
+//            textCharacter.draw(at: po, withAttributes: [NSAttributedStringKey.font: kFontSize])
         }
         // 6.绘制干扰线
         startDrawHinderLine(rect)
